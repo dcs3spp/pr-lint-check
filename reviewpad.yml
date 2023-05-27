@@ -55,5 +55,6 @@ workflows:
   # workflows:
   - name: check-labels
     run:
+      - $info($length($labels())
       - if: "$length($labels()) == 0"
         then: $fail("No label has been assigned to the pull request")
