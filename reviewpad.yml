@@ -17,10 +17,10 @@
 #     color: "#c90076"
 # 
 rules:
-  - name: has-labels
+  - name: has-no-labels
     kind: patch # optional
-    description: Checks if the pull request has labels
-    spec: $length($labels()) > 0
+    description: Checks if the pull request has no labels
+    spec: $length($labels()) <= 0
 
 # Define the list of workflows to be run by Reviewpad.
 # A workflow is a list of actions that will be executed based on the defined rules.
@@ -60,7 +60,7 @@ workflows:
   - name: check-for-missing-labels
     run:
       # - $info($length($labels())
-      - if: has-labels
+      - if: has-no-labels
         then:
           - $addLabel("feature")
           - $info("info statement")
