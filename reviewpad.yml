@@ -58,7 +58,10 @@ workflows:
   #     - if: $isDraft() == false && $approvalsCount() < 1
   #       then: $addLabel("waiting-for-review")
   - name: check-for-missing-labels
+    description: add unlabelled if no labels assigned
     run:
       # - $info($length($labels())
-      - if: has-no-labels
-        then: $addLabel("unlabelled")
+      if:
+        - rule: has-no-labels
+      then:
+        - $addLabel("unlabelled")
