@@ -60,7 +60,6 @@ workflows:
   - name: check-for-missing-labels
     description: add unlabelled if no labels assigned
     run:
-      # - $info($length($labels())
       if:
         - rule: has-no-labels
       then:
