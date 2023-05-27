@@ -61,8 +61,4 @@ workflows:
     run:
       # - $info($length($labels())
       - if: has-no-labels
-        then:
-          - $addLabel("feature")
-          - $info("info statement")
-          - $error("error statement")
-          - $fail("No label has been assigned to the pull request")
+        then: $addLabel("unlabelled")
