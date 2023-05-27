@@ -18,6 +18,7 @@ labels:
 
 rules:
   - name: has-labels
+    kind: patch # optional
     description: Checks if the pull request has labels
     spec: $length($labels()) > 0
 
