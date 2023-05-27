@@ -55,6 +55,6 @@ workflows:
   # workflows:
   - name: check-for-missing-labels
     run:
-      - $info($length($labels())
+      # - $info($length($labels())
       - if: "$length($labels()) == 0"
         then: $info("No label has been assigned to the pull request")
