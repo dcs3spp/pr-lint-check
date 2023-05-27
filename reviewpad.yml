@@ -52,9 +52,8 @@ workflows:
   #     - if: $isDraft() == false && $approvalsCount() < 1
   #       then: $addLabel("waiting-for-review")
 
-# workflows:
-- name: check-labels
-  run:
-    - if: "$length($labels()) == 0"
-      then: $info("No label has been assigned to the pull request")
-
+  # workflows:
+  - name: check-labels
+    run:
+      - if: "$length($labels()) == 0"
+        then: $info("No label has been assigned to the pull request")
