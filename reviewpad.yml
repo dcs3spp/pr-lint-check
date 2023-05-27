@@ -65,3 +65,4 @@ workflows:
         - rule: has-no-labels
       then:
         - $addLabel("unlabelled")
+        - $fail("No label assigned to pull request")
