@@ -53,7 +53,7 @@ workflows:
   #       then: $addLabel("waiting-for-review")
 
   # workflows:
-  - name: check-labels
+  - name: check-for-missing-labels
     run:
       - $info($length($labels())
       - if: "$length($labels()) == 0"
