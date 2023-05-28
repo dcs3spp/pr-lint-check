@@ -15,7 +15,7 @@ rules:
   - name: has-no-current-release
     kind: patch
     description: Checks if current-release label is in use
-    spec: '$isElementOf("current-release", $labels())'
+    spec: '$isElementOf("current-release", $labels()) == false'
   - name: has-future-release
     kind: patch
     description: Check if future-release label is in use
