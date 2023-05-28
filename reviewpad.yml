@@ -53,3 +53,8 @@ workflows:
                     else: $info("current-release and future-label are not present")
                 else: $info("has current release label")
             else: $fail("One of [current-release, future-release or draft] should be assigned as a label to a PR")
+  - name: long-live pull requests
+    descriptions: notify of PRs that have been in queue for a while
+    run:
+      if: $createdAt() < 15 days ago
+      then: $commentOnce("This pull request has been opened for more than 15 days. Please consider closing it!")
