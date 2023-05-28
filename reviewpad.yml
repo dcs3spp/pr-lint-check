@@ -16,6 +16,10 @@ rules:
     kind: patch
     description: Checks if current-release label is in use
     spec: '$any($labels(), ($l: String => $contains($l, "current-release"))) == false'
+  - name: has-future-release
+    kind: patch
+    description: Check if future-release label is in use
+    spec: '$isElementOf("future-release", $labels())'
 
 workflows:
   - name: summarize
@@ -45,7 +49,7 @@ workflows:
       - if: has-no-current-release
         then:
           - $info("has no current release")
-          - if: '$any($labels(), ($l: String => $matchString("^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$", $l)))'
+          - if: has-future-release && '$any($labels(), ($l: String => $matchString("^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$", $l)))'
             then: $info("has semantic version label")
             else: $info("does not have semantic version label")
         else: $info("has current release")
