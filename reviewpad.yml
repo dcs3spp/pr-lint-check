@@ -31,41 +31,14 @@ rules:
     description: check release label is current or future-release
     spec: $any($labels(), ($l: String => $isElementOf($l,$group("required-labels"))) #'$any(["current-release", "future-release"], ($el: String => $el == "a"))' # true
 
-# Define the list of workflows to be run by Reviewpad.
-# A workflow is a list of actions that will be executed based on the defined rules.
 # For more details see https://docs.reviewpad.com/guides/syntax#workflow.
 workflows:
-  # This workflow calls Reviewpad AI agent to summarize the pull request.
   - name: summarize
     description: Summarize the pull request
     run:
       # Summarize the pull request on pull request synchronization.
       - if: ($eventType() == "synchronize" || $eventType() == "opened") && $state() == "open"
         then: $summarize()
-
-  # This workflow validates best practices for pull request management.
-  # This helps developers follow best practices.
-  # - name: best-practices
-  #   description: Validate best practices for pull request management
-  #   run:
-  #     # Warn pull requests that do not have an associated GitHub issue.
-  #     - if: $hasLinkedIssues() == false
-  #       then: $warn("Please link an issue to the pull request")
-  #     # Warn pull requests if their description is empty.
-  #     - if: $description() == ""
-  #       then: $warn("Please provide a description for the pull request")
-  #     # Warn pull request do not have a clean linear history.
-  #     - if: $hasLinearHistory() == false
-  #       then: $warn("Please rebase your pull request on the latest changes")
-
-  # This workflow signals pull requests waiting for reviews.
-  # This helps guarantee that pull requests are reviewed and approved by at least one person.
-  # - name: check-approvals
-  #   description: Check that pull requests have the required number of approvals
-  #   run:
-  #     # Label pull requests with `waiting-for-review` if there are no approvals;
-  #     - if: $isDraft() == false && $approvalsCount() < 1
-  #       then: $addLabel("waiting-for-review")
   - name: check-for-missing-labels
     description: add unlabelled if no labels assigned
     run:
