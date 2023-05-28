@@ -52,4 +52,4 @@ workflows:
                         else: $fail("future-release label must also have semantic version label")
                     else: $info("current-release and future-label are not present")
                 else: $info("has current release label")
-            else: $fail($sprintf("One of [%s] should be assigned as a label to a PR", [$group("required-labels")]))
+            else: $fail($sprintf("One of [%s] should be assigned as a label to a PR", ["current-release","future-release","draft"])
