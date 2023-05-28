@@ -45,7 +45,7 @@ workflows:
       - if: has-no-current-release
         then:
           - $info("has no current release")
-          - if: $any($labels(), ($l: String => $matchString("^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(?:-((?:0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9][0-9]*|[0-9]*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$",$l))))
+          - if: $any($labels(), ($l: String => $matchString("(pastry)", $l)))
             then: $info("has semantic version label")
             else: $info("does not have semantic version label")
         else: $info("has current release")
