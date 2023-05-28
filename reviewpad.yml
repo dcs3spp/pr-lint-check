@@ -45,7 +45,7 @@ workflows:
       - if: has-no-current-release
         then:
           - $info("has no current release")
-          - if: '$any($labels(), ($l: String => $matchString("(pastry)", $l)))'
+          - if: '$any($labels(), ($l: String => $matchString("(1.0)", $l)))'
             then: $info("has semantic version label")
             else: $info("does not have semantic version label")
         else: $info("has current release")
