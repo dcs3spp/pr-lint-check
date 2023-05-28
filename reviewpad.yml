@@ -12,7 +12,12 @@ rules:
     kind: patch
     description: Checks if label is current-release, draft or future-release
     spec: '$any($labels(), ($l: String => $isElementOf($l,$group("required-labels"))))'
-
+  - name: has-release-label
+    description: Checks if a semantic version label is present in the PR
+    spec: "$any($labels(), ($l: String => $toNumber($l)))"
+  - name: has-current-release
+    description: Checks if current-release label is in use
+    spec: '$any($labels(), ($l: String => $matchString("(current-release)", $l)))'
 workflows:
   - name: summarize
     description: Summarize the pull request
@@ -35,3 +40,10 @@ workflows:
         - $info("Required label is present")
       else:
         - $fail($sprintf("One of [%s] should be assigned as a label to a PR", [$group("required-labels")]))
+  - name: check-for-release-label
+    description: check for the presence of a release label if future-release is present
+    run:
+      if:
+        -rule: has-release-label == false
+      then: $info("no current-release label")
+      else: $info("current release label in use")
