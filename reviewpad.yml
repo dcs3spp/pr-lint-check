@@ -25,7 +25,7 @@ rules:
     kind: patch
     description: Checks if the pull request has no labels
     spec: $length($labels()) <= 0
-  - name: has-valid-labels
+  - name: has-valid-label
     kind: patch
     description: check release label is current-release, draft or future-release
     spec: '$any($labels(), ($l: String => $isElementOf($l,$group("required-labels")))'
