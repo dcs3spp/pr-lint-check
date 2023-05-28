@@ -20,15 +20,14 @@ groups:
   - name: required-labels
     description: List of labels that should be used
     spec: '["current-release", "draft", "future-release"]'
-
 rules:
   - name: has-no-labels
     kind: patch
     description: Checks if the pull request has no labels
     spec: $length($labels()) <= 0
-  - name: valid-labels
+  - name: has-valid-label
     kind: patch
-    description: check release label is current or future-release
+    description: check release label is current-release, draft or future-release
     spec: '$any($labels(), ($l: String => $isElementOf($l,$group("required-labels")))'
 
 # For more details see https://docs.reviewpad.com/guides/syntax#workflow.
@@ -40,13 +39,18 @@ workflows:
       - if: ($eventType() == "synchronize" || $eventType() == "opened") && $state() == "open"
         then: $summarize()
   - name: check-for-missing-labels
-    description: add unlabelled if no labels assigned
+    description: check if PR has no label
     run:
       if:
         - rule: has-no-labels
       then:
         - $fail("No label assigned to pull request")
   - name: check-for-valid-labels
-    description: check for the presence of a label in required-labels
+    description: check for the presence of a label in required-labels set
     run:
-      - $info("Checking that one of the required labels is present")
+      if:
+        - rule: has-valid-label
+      then:
+        - $info("Required label is present")
+      else:
+        - $fail("Label should be one of the labels in the required-labels set")

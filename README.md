@@ -8,3 +8,4 @@ It exists to check that PR have labels
 
 - Add synch PR check
 - Fail checks if PR has no label
+- Add check to test if label is valid
