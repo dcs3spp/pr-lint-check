@@ -18,7 +18,7 @@
 #
 groups:
   - name: required-labels
-    description: List of labels that should not be used
+    description: List of labels that should be used
     spec: '["current-release", "draft", "future-release"]'
 
 rules:
