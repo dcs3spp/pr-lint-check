@@ -34,4 +34,4 @@ workflows:
       then:
         - $info("Required label is present")
       else:
-        - $fail($sprintf("One of [%s] should be assigned as a label to a PR", $group("required-labels"))
+        - $fail($sprintf("One of [%s] should be assigned as a label to a PR", $group("required-labels")))
