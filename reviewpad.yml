@@ -46,6 +46,6 @@ workflows:
     description: check for the presence of a release label if future-release is present
     run:
       if:
-        - rule: has-release-label == false
+        - rule: has-current-release == false
       then: $info("no current-release label")
       else: $info("current release label in use")
