@@ -1,25 +1,8 @@
-# This file is used to configure Reviewpad.
-# The configuration is a proposal to help you get started.
-# You can use it as a starting point and customize it to your needs.
-# For more details see https://docs.reviewpad.com/guides/syntax.
-
-# Define the list of labels to be used by Reviewpad.
-# For more details see https://docs.reviewpad.com/guides/syntax#label.
-# labels:
-#   small:
-#     description: Pull request is small
-#     color: "#76dbbe"
-#   medium:
-#     description: Pull request is medium
-#     color: "#2986cc"
-#   large:
-#     description: Pull request is large
-#     color: "#c90076"
-#
 groups:
   - name: required-labels
     description: List of labels that should be used
     spec: '["current-release", "draft", "future-release"]'
+
 rules:
   - name: has-no-labels
     kind: patch
@@ -27,15 +10,13 @@ rules:
     spec: $length($labels()) <= 0
   - name: has-valid-label
     kind: patch
-    description: check release label is current-release, draft or future-release
+    description: Checks if label is current-release, draft or future-release
     spec: '$any($labels(), ($l: String => $isElementOf($l,$group("required-labels")))'
 
-# For more details see https://docs.reviewpad.com/guides/syntax#workflow.
 workflows:
   - name: summarize
     description: Summarize the pull request
     run:
-      # Summarize the pull request on pull request synchronization.
       - if: ($eventType() == "synchronize" || $eventType() == "opened") && $state() == "open"
         then: $summarize()
   - name: check-for-missing-labels
