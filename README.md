@@ -14,5 +14,3 @@ It exists to check that PR have labels
 
 - Add check to test for valid release number label if have future-release set or
   draft?
-
-another test
