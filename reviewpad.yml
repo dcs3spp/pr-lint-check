@@ -42,6 +42,7 @@ workflows:
   - name: check-for-release-label
     description: check for the presence of a release label if future-release is present
     run:
-      if: $rule("has-current-release")==false
-      then: $info("no current-release label")
-      else: $info("current release label in use")
+      - $info($rule("has-current-release")
+      - if: $rule("has-current-release")==false
+        then: $info("no current-release label")
+        else: $info("current release label in use")
