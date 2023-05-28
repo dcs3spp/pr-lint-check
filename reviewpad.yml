@@ -49,7 +49,7 @@ workflows:
       - if: has-no-current-release
         then:
           - $info("has no current release")
-          - if: has-future-release && '$any($labels(), ($l: String => $matchString("^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$", $l)))'
+          - if: $rule("has-future-release") && '$any($labels(), ($l: String => $matchString("^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$", $l)))'
             then: $info("has semantic version label")
             else: $info("does not have semantic version label")
         else: $info("has current release")
