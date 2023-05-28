@@ -29,7 +29,7 @@ rules:
   - name: valid-labels
     kind: patch
     description: check release label is current or future-release
-    spec: $any($labels(), ($l: String => $isElementOf($l,$group("required-labels"))) #'$any(["current-release", "future-release"], ($el: String => $el == "a"))' # true
+    spec: '$any($labels(), ($l: String => $isElementOf($l,$group("required-labels")))'
 
 # For more details see https://docs.reviewpad.com/guides/syntax#workflow.
 workflows:
