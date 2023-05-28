@@ -12,39 +12,44 @@ rules:
     kind: patch
     description: Checks if label is current-release, draft or future-release
     spec: '$any($labels(), ($l: String => $isElementOf($l,$group("required-labels"))))'
-  - name: has-release-label
-    kind: patch
-    description: Checks if a semantic version label is present in the PR
-    spec: "$any($labels(), ($l: String => $toNumber($l)))"
-  - name: has-current-release
+  - name: has-no-current-release
     kind: patch
     description: Checks if current-release label is in use
-    spec: '$any($labels(), ($l: String => $matchString("(current-release)", $l)))'
+    spec: '$isElementOf("current-release", $labels())'
+  - name: has-future-release
+    kind: patch
+    description: Check if future-release label is in use
+    spec: '$isElementOf("future-release", $labels())'
+  - name: has-semantic-version
+    kind: patch
+    description: Check if semantic version label is in use
+    spec: '$any($labels(), ($l: String => $matchString("^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$", $l)))'
+
 workflows:
   - name: summarize
     description: Summarize the pull request
     run:
       - if: ($eventType() == "synchronize" || $eventType() == "opened") && $state() == "open"
         then: $summarize()
-  - name: check-for-missing-labels
-    description: check if PR has no label
+  - name: validate-labels
+    description: validate expected labels and semantics are correct
     run:
-      if:
-        - rule: has-no-labels
-      then:
-        - $fail("No label assigned to pull request")
-  - name: check-for-valid-labels
-    description: check for the presence of a label in required-labels set
-    run:
-      if:
-        - rule: has-valid-label
-      then:
-        - $info("Required label is present")
-      else:
-        - $fail($sprintf("One of [%s] should be assigned as a label to a PR", [$group("required-labels")]))
-  - name: check-for-release-label
-    description: check for the presence of a release label if future-release is present
-    run:
-      if: !has-current-release
-      then: $info("no current-release label")
-      else: $info("current release label in use")
+      - if: has-no-labels
+        then: $fail("No label assigned to pull request")
+        else:
+          - $info("Checking if required labels present")
+          - if: has-valid-label
+            then:
+              - $info("Required label is present")
+              - if: has-no-current-release
+                then:
+                  - $info("current-release label is not present")
+                  - if: has-future-release
+                    then:
+                      - $info("has-future-release label is present")
+                      - if: has-semantic-version
+                        then: $info("semantic version label is present")
+                        else: $fail("future-release label must also have semantic version label")
+                    else: $info("current-release and future-label are not present")
+                else: $info("has current release label")
+            else: $fail("One of [current-release, future-release or draft] should be assigned as a label to a PR")
