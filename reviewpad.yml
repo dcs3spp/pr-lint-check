@@ -43,3 +43,6 @@ workflows:
     description: check for the presence of a release label if future-release is present
     run:
       - $info("A step")
+      - if: has-current-release
+        then: $info("has current release")
+        else: $info("does not have current release")
