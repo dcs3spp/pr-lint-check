@@ -11,7 +11,7 @@ rules:
   - name: has-valid-label
     kind: patch
     description: Checks if label is current-release, draft or future-release
-    spec: '$any($labels(), ($l: String => $isElementOf($l,$group("required-labels")))'
+    spec: '$any($labels(), ($l: String => $isElementOf($l,$group("required-labels"))))'
 
 workflows:
   - name: summarize
