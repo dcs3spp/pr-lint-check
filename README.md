@@ -16,3 +16,4 @@ It exists to check that PR have labels
   draft?
 
 test
+another test
